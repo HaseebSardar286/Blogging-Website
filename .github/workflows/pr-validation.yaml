@@ -10,27 +10,38 @@ jobs:
     name: Lint HTML and CSS
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm install
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
 
-      - name: Lint HTML files
+      - name: Install Linting Tools
+        run: |
+          npm install htmlhint stylelint stylelint-config-standard
+
+      - name: Lint HTML
         run: npx htmlhint "src/**/*.html"
 
-      - name: Lint CSS files
+      - name: Lint CSS
         run: npx stylelint "styles/**/*.css"
 
   build:
-    name: Build Website
+    name: Build Static Website
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm install
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
 
-      - name: Build project
-        run: npx parcel build src/index.html --dist-dir build
+      - name: Install Parcel
+        run: npm install parcel
+
+      - name: Build Static Website
+        run: npx parcel build src/home.html --dist-dir dist --public-url ./
